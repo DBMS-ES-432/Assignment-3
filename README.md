@@ -183,7 +183,7 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 * Responsibility of Group G2 :- All the Backend work including database conectivity using python, mysql and flask.
     <font color="green">
     * Sai Krishna Avula - Image storing and retrieval, Complaint registration, Google sign-in (authentication)
-    * Ritesh Patidar - Login, Registration, helped in all, made [readme.md](README.md)
+    * Ritesh Patidar - Login, Registration, helped in all backend work, made [readme.md](README.md)
     * Sujeet Kumar Yadav - OTP generation code, form fills
     </font>
 
