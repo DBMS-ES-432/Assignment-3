@@ -57,7 +57,8 @@ def test_specific():
 @login_required
 def home():
     #print(session)
-    return render_template('home.html')
+    login = session['user']
+    return render_template('home.html',login=login)
     
 
 @app.route('/test_guest_fill', methods = ['GET','POST'])
@@ -299,7 +300,7 @@ def login():
             msg = 'Logged in successfully !'
             session['user'] = username		
             #print(session['user'])	
-            return render_template('home.html',login=login)
+            return render_template('home.html',login=username)
         else:
             msg = 'Incorrect username / password !'
     return render_template('index123.html', msg = msg)
