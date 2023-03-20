@@ -29,6 +29,7 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
   - [User login/Register](#user-loginregister)
   - [Admin login](#admin-login)
   - [Execution of Dynamic Operations](#execution-of-dynamic-operations)
+  - [Invalid html accesses:](#invalid-html-accesses)
 - [Contributions](#contributions)
 - [References](#references)
 # Installation
@@ -91,6 +92,7 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
   * The website contain link for the admin login in which we can login by giving following credentials :-
   <font color="green">
   * user_id= admin
+  
   * password = pass </font>
 
 ## Execution of Dynamic Operations
@@ -156,7 +158,12 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 
 ![](./screenshorts/admin.jpeg)
 
-![](./screenshorts/admin_data.PNG)
+
+* Admin can view the image as follows: [VIDEO](./screenshorts/video/display_image.webm)
+  
+## Invalid html accesses:
+* No one can access any other page without login, for clarification look at [Video](./screenshorts/video/invalid_access.webm)
+
 
 
 # Contributions
