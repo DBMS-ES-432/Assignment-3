@@ -102,16 +102,14 @@
         <tbody>
             {% for item in data %}
             <tr>
-                <td>
+
                     <div class="filter">
                     <label for="comp_id"></label>
-                    <form id="login" class="input-group" name="myForm" action="/change_status" method="Post" required>
-                        <!-- <select id="domain1" name="filter">
-                        <option value="{{item[0]}}">{{item[0]}}</option>
-                    </select> -->
-                    <input type="text" name="filter" value="{{item[0]}}" readonly>
+                    <form id="login" class="input-group" name="myForm" action="{{ url_for('change_status', image_id=item[0]) }}" method="Post" required>
+                        
+                    <td>{{item[0]}}</td>
                     </div>
-                </td> 
+
                 <td>{{item[1]}}</td>
                 <td>{{item[2]}}</td>
                 <td>{{item[3]}}</td>
@@ -131,7 +129,16 @@
                     </select>
                     </form>
                     </div>
-                </td>   
+                </td>
+                <td>
+                    <!-- {{item[10]}} -->
+                    {% if "NULL" in item[10]|string %}
+                    <p>NULL</p>
+                    {%else%}
+                    <a href="{{ url_for('get_image', image_id=item[0]) }}" target="_blank">View Image</a>
+                    {%endif%}
+                </td>
+                
             </tr>
             {% endfor %}
         </thed>
