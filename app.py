@@ -434,7 +434,7 @@ def OTP():
                 mail['From'] = "patidarritesh@iitgn.ac.in"
                 mail['To'] = "{}".format( to_mail )
                 server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
-                server.login("patidarritesh@iitgn.ac.in", "Patidar@143321")
+                server.login("patidarritesh@iitgn.ac.in", "********")
                 server.send_message(mail)
                 server.quit()
                 return render_template('new_password.html')
