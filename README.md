@@ -90,10 +90,11 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 
 ## Admin login
   * The website contain link for the admin login in which we can login by giving following credentials :-
-  <font color="green">
-  * user_id= admin
   
-  * password = pass </font>
+
+  *  user_id= admin
+  
+  * password = pass
 
 ## Execution of Dynamic Operations
 
@@ -170,11 +171,11 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 
 * Responsibility of Group G1 :- Frontend development using html ,css ,javascript. followings are contributors 
   <font color="green">
-    * Prajwal Jivtode - Admin Complaint Dashboard, Homepage
-    * Rishi Katkar - Login Page, Register page, Admin Login
-    * Onkar Mishra - Login Page, Register Page, Sign Up with google page, Housing, Hostel
-    * Priyanshu Mishra - Login Page, Register page, Admin Login
-    * Madhuri Awachar - Frontend and backend tester, logout page
+    * Prajwal Jivtode - Admin Complaint Dashboard, Homepage with CSS
+    * Rishi Katkar - Login Page, Register page, Admin Login with CSS
+    * Onkar Mishra - Login Page, Register Page, Sign Up with google page, Housing, Hostel ,With CSS
+    * Priyanshu Mishra - Login Page, Register page, Admin Login ,With CSS
+    * Madhuri Awachar - Frontend and backend tester, logout page,With CSS
     * Pooja Goel  - forgot password, helped in [readme.md](README.md)
     * Pinki Kumari - backend testing, guest house
     * Harshit Chauhan - specific location page
@@ -182,7 +183,7 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 * Responsibility of Group G2 :- All the Backend work including database conectivity using python, mysql and flask.
     <font color="green">
     * Sai Krishna Avula - Image storing and retrieval, Complaint registration, Google sign-in (authentication)
-    * Ritesh Patidar - Login, Registration, helped in all
+    * Ritesh Patidar - Login, Registration, helped in all, made [readme.md](README.md)
     * Sujeet Kumar Yadav - OTP generation code, form fills
     </font>
 
