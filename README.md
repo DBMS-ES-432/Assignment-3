@@ -79,8 +79,8 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 ## Admin login :-
   * The website contain link for the admin login in which we can login by giving following credentials :-
   <font color="gree">
-  * **user_id= admin**
-  * **password = pass**  </font>
+  * user_id= admin
+  * password = pass </font>
 
 ## Execution of Dynamic Operations
 
@@ -96,19 +96,19 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
   
   * complaint about the electricity in the hostel room
    
-   ![](./screenshorts/Hostel_complain.png)
+   ![](./screenshorts/Hostel_complain.PNG)
 
   * complaint successful
     
-![](./screenshorts/success.png)
+![](./screenshorts/success.PNG)
 
 * The database table before the complaint 
 
-![](./screenshorts/before_query.png)
+![](./screenshorts/before_query.PNG)
 
 * The database after the complaint
 
-![](./screenshorts/after_query.png)
+![](./screenshorts/after_query.PNG)
 
 
 - [ ] insert
@@ -120,32 +120,32 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 
 * updating password of user
 
-![](./screenshorts/Reset_pass_page.png)
+![](./screenshorts/Reset_pass_page.PNG)
 
 * updating new password
 
-![](./screenshorts/pass_change.png)
+![](./screenshorts/pass_change.PNG)
 
 * database table before password update
 
 
-![](./screenshorts/pass_before.png)
+![](./screenshorts/pass_before.PNG)
 
 * Otp send by server
   
-![](./screenshorts/Otp_mail.png)
+![](./screenshorts/Otp_mail.PNG)
 
 * Password change succesful
   
-![](./screenshorts/hooray.png)
+![](./screenshorts/hooray.PNG)
 
 * updated database table after password change
   
-![](./screenshorts/pass_after.png)
+![](./screenshorts/pass_after.PNG)
 
 ## Admin can see the data as follows :-
 
-![](./screenshorts/admin_data.png)
+![](./screenshorts/admin_data.PNG)
 
 
 # Contributions
