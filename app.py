@@ -56,7 +56,7 @@ def test_specific():
 @app.route('/home', methods =['GET', 'POST'])
 @login_required
 def home():
-    print(session)
+    #print(session)
     return render_template('home.html')
     
 
@@ -141,7 +141,7 @@ def test_housing_fill():
         # with open('file.txt', 'w') as f:
         #     print(image, file=f)
         comp_id = uuid.uuid1()
-        print(comp_id.hex)
+        #print(comp_id.hex)
         cursor = mysql.connection.cursor()
         cursor.execute('\
         INSERT INTO Complaint\
@@ -149,7 +149,7 @@ def test_housing_fill():
         VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
         (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,apartment,corridor,availability,'Pending',image,'NULL'))
         check=cursor.execute('Select * from Housing_Updated where Block_Name = %s and Apartment_No = %s',(block,apartment))
-        print(check)
+        #print(check)
         if not check:
             cursor.execute('INSERT into Housing_Updated (Block_Name,Apartment_No,Email_ID)\
              Values (%s,%s,%s)',(block,apartment,complaint_email))
@@ -208,7 +208,7 @@ def change_status(image_id):
     messages.append(cursor.fetchone())
     cursor.execute("Select count(Complaint_Status) from Complaint")
     messages.append(cursor.fetchone())
-    print(messages)
+    #print(messages)
     return render_template('Admin_page.html',data=data,messages=messages)
     return redirect('/filter')
 
@@ -220,7 +220,7 @@ def filter():
     if request.method == 'POST':
         filter = request.form['filter']
         cursor = mysql.connection.cursor()
-        print(filter)
+        #print(filter)
         messages=[]
         if filter == 'Civil':
             cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Civil' and Complaint_Status = 'Pending'")
@@ -298,7 +298,7 @@ def login():
             complaint_email = username
             msg = 'Logged in successfully !'
             session['user'] = username		
-            print(session['user'])	
+            #print(session['user'])	
             return render_template('home.html',login=login)
         else:
             msg = 'Incorrect username / password !'
@@ -328,7 +328,7 @@ def admin():
     if request.method == 'POST':
         username = request.form['ID']
         password = request.form['password']
-        print(username,password)
+        #print(username,password)
         if username.lower() == 'admin' and password == 'pass':
             session['user'] = 'admin'
             cursor = mysql.connection.cursor()
@@ -345,7 +345,7 @@ def admin():
             messages.append(cursor.fetchone())
             cursor.execute("Select count(Complaint_Status) from Complaint")
             messages.append(cursor.fetchone())
-            print(messages)
+            #print(messages)
             return render_template('Admin_page.html',data=data,messages=messages)
     return render_template('admin_login.html')
 
@@ -361,8 +361,7 @@ def get_image(image_id):
     
     image_bytes = cursor.fetchone()[10]
     image_bytes = str(image_bytes, 'UTF-8')
-    with open('file1.txt', 'w') as f:
-            print(image_bytes, file=f)
+
     #image_bytes = b64decode(encoded_image_string)
 
     # Create a PIL Image object from the bytes
@@ -450,13 +449,13 @@ def new_password():
         password = request.form['pas1']
         confirm = request.form['pas2']
         otp = request.form['OTP']
-        print(password,confirm,otp,OTP)
+        #print(password,confirm,otp,OTP)
         if password == confirm and int(otp)==OTP:
             cursor = mysql.connection.cursor()
             cursor.execute("Select * from User where email_id = %s",(to_mail,))
             email = cursor.fetchone()
             for i in email:
-                print(i,to_mail)
+                #print(i,to_mail)
                 if i == to_mail:
                     cursor.execute("update User Set password = %s where email_id =%s",(password,to_mail,))
                     flash('hooray password changed successfully!')
@@ -470,7 +469,7 @@ def new_password():
 @app.route('/logout', methods = ['post','get'])
 def logout():
     session.pop('user')
-    print(session)
+    #print(session)
     return redirect('/')
     return redirect('/')
 
@@ -517,7 +516,7 @@ def google_auth():
     user = oauth.google.userinfo()
     name = user['name']
     email_id = user['email']
-    print(user)
+    #print(user)
 
     return redirect('/register')
 

@@ -164,7 +164,7 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 ## Invalid html accesses:
 * No one can access any other page without login, for clarification look at [Video](./screenshorts/video/invalid_access.webm)
 
- * Image is not an upload option for guest_house, thus if clicked to view image, it dsipalys broken image or NULL
+ * Image is optional, thus image column can be either a clickable link or NULL.
 
 # Contributions
 
