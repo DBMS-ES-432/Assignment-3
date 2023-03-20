@@ -27,9 +27,10 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 - [Installation](#installation)
 - [Usage](#usage)
   - [User login/Register](#user-loginregister)
-  - [Admin login :-](#admin-login--)
+  - [Admin login](#admin-login)
   - [Execution of Dynamic Operations](#execution-of-dynamic-operations)
-  - [Admin can see the data as follows :-](#admin-can-see-the-data-as-follows--)
+  - [Admin can see the data as follows](#admin-can-see-the-data-as-follows)
+  - [Invalid html accesses:](#invalid-html-accesses)
 - [Contributions](#contributions)
 - [References](#references)
 # Installation
@@ -43,7 +44,10 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
     
     ![](./screenshorts/1.png)
 
-  * b: Installing the packages:
+  * b: Installing the packages, it can also be done using [Requirements](requirements.txt) with following command:
+
+    * pip3 install -r requirements.txt
+    * or installing all packages individually
     * pip install flask
 
     ![](./screenshorts/2.png)
@@ -64,8 +68,17 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
     * pip install requests
   
   ![](./screenshorts/6.png)
+ 
+  * For frogot password, OTP is sent by admin gmail_id. For testing purpose we used our personal iitgn gmial_id.
+  * If you want to test this functionality you have to give your iitgn Email and password in def otp() function.
 
+  * ```NOTE```: USE ONLY IITGN EMAIL_ID!!!
+  
+      ![](./screenshorts/def_otp.PNG)
 
+  * For this you have to enable the less security function in your gmail account security .
+  * 
+       ![](./screenshorts/less_secure.PNG)
   # Usage
   ***
   ## User login/Register
@@ -76,9 +89,9 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
         ![](./screenshorts/11.png)
 
 
-## Admin login :-
+## Admin login
   * The website contain link for the admin login in which we can login by giving following credentials :-
-  <font color="gree">
+  <font color="green">
   * user_id= admin
   * password = pass </font>
 
@@ -143,28 +156,33 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
   
 ![](./screenshorts/pass_after.PNG)
 
-## Admin can see the data as follows :-
+## Admin can see the data as follows
 
-![](./screenshorts/admin_data.PNG)
+![](./screenshorts/admin.jpeg)
 
+* Admin can view the image as follows: [VIDEO](./screenshorts/video/display_image.webm)
+  
+## Invalid html accesses:
+* No one can access any other page without login, for clarification look at [Video](./screenshorts/video/invalid_access.webm)
 
 # Contributions
 
 * Responsibility of Group G1 :- Frontend development using html ,css ,javascript. followings are contributors 
-  <font color="gree">
-    * Prajwal Jivtode 
-    * Rishi Katkar 
-    * Onkar Mishra
-    * Priyanshu Mishra
-    * Madhuri Awachar
-    * Pooja Goel  
-    * Pinki Kumari
+  <font color="green">
+    * Prajwal Jivtode - Admin Complaint Dashboard, Homepage
+    * Rishi Katkar - Login Page, Register page, Admin Login
+    * Onkar Mishra - Login Page, Register Page, Sign Up with google page, Housing, Hostel
+    * Priyanshu Mishra - Login Page, Register page, Admin Login
+    * Madhuri Awachar - Frontend and backend tester, logout page
+    * Pooja Goel  - forgot password, helped in [readme.md](README.md)
+    * Pinki Kumari - backend testing, guest house
+    * Harshit Chauhan - specific location page
   </font>
 * Responsibility of Group G2 :- All the Backend work including database conectivity using python, mysql and flask.
-    <font color="gree">
-    * Sai Krishna Avula
-    * Ritesh Patidar
-    * Sujeet Kumar Yadav
+    <font color="green">
+    * Sai Krishna Avula - Image storing and retrieval, Complaint registration, Google sign-in (authentication)
+    * Ritesh Patidar - Login, Registration, helped in all
+    * Sujeet Kumar Yadav - OTP generation code, form fills
     </font>
 
 * Responsibility of both G1 and G2 :- Creation of database of the maintenance portal of IIT Gandhinagar
@@ -176,7 +194,10 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 
 * [Flask_documentation](https://flask.palletsprojects.com/en/2.2.x/)
 
+* [youtube](https://youtu.be/L5WWrGMsnpw)
 
+* [Google Sign-In](https://developers.google.com/identity/sign-in/web/sign-in)
+  
 
 
 
