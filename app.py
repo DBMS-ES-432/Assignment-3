@@ -352,6 +352,7 @@ def admin():
 
 
 @app.route('/image/<string:image_id>')
+@login_required
 def get_image(image_id):
     # code to retrieve the base64 encoded image string from the database
     # ...
@@ -415,6 +416,26 @@ def register():
     return render_template('register.html',msg=msg)
 
  
+
+@app.route('/complaints', methods =['GET', 'POST'])
+@login_required
+def complaints():
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM Complaint where User_ID = %s",(session['user'],))
+    data = cursor.fetchall()
+    cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Pending' and User_ID = %s",(session['user'],))
+    messages = []
+    messages.append(cursor.fetchone())
+    cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Done' and User_ID = %s",(session['user'],))
+    messages.append(cursor.fetchone())
+    cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'In Progress' and User_ID = %s",(session['user'],))
+    messages.append(cursor.fetchone())
+    cursor.execute("Select count(Complaint_Status) from Complaint where User_ID = %s",(session['user'],))
+    messages.append(cursor.fetchone())
+    return render_template('complaints.html',data=data,messages=messages)
+
+
+
 @app.route('/OTP', methods =["GET", "POST"])
 def OTP():
     if request.method == "POST":
