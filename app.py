@@ -330,7 +330,7 @@ def admin():
         username = request.form['ID']
         password = request.form['password']
         #print(username,password)
-        if username.lower() == 'admin' and password == 'pass':
+        if username.lower() == 'admin' and password == 'asdf':
             session['user'] = 'admin'
             cursor = mysql.connection.cursor()
             cursor.execute("SELECT * FROM Complaint")
@@ -347,8 +347,8 @@ def admin():
             cursor.execute("Select count(Complaint_Status) from Complaint")
             messages.append(cursor.fetchone())
             #print(messages)
-            return render_template('Admin_page.html',data=data,messages=messages)
-    return render_template('admin_login.html')
+            return render_template('Admin_page.html',data=data,messages=messages), 200
+    return render_template('admin_login.html'), 400
 
 
 @app.route('/image/<string:image_id>')
