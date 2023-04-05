@@ -1,6 +1,6 @@
 from flask import *
 from flask_mysqldb import MySQL
-from auth_decorator import login_required
+from auth_decorator import *
 import MySQLdb.cursors
 import re
 import yaml
@@ -10,8 +10,12 @@ import random
 import smtplib
 from email.message import EmailMessage
 from base64 import b64encode
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 app = Flask(__name__)
+
+limiter = Limiter(get_remote_address, app=app, default_limits=["200 per day", "50 per hour"])
 
 db=yaml.safe_load(open('db.yaml'))
 
@@ -284,6 +288,7 @@ def filter():
             data = cursor.fetchall()
             return render_template('Admin_page.html',messages=messages,data=data)
 @app.route('/', methods =['GET', 'POST'])
+@limiter.limit("5 per minute")
 def login():
     msg = ''
     if request.method == 'POST':
@@ -319,12 +324,14 @@ def regError(message):
     return render_template("index123.html",pageType=['register'],flashType="danger")
 
 @app.route('/admin_page')
+@admin_required
 @login_required
 def admin_page():
     return render_template('Admin_page.html')
 
 
 @app.route('/admin', methods = ['GET', 'POST'])
+@limiter.limit("5 per minute")
 def admin():
     if request.method == 'POST':
         username = request.form['ID']
@@ -353,6 +360,7 @@ def admin():
 
 @app.route('/image/<string:image_id>')
 @login_required
+@admin_required
 def get_image(image_id):
     # code to retrieve the base64 encoded image string from the database
     # ...
@@ -378,6 +386,7 @@ def get_image(image_id):
     return render_template('Admin_page.html', results=results)
 
 @app.route('/register', methods =['GET', 'POST'])
+@limiter.limit("5 per minute")
 def register():
     msg = ''
     if request.method == 'POST':

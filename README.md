@@ -204,7 +204,7 @@ The technology used for frontend: HTML, CSS, and JavaScript, whereas for the bac
 
 
 
-  
+  The HTTP 429 Too Many Requests response status code indicates the user has sent too many requests in a given amount of time ("rate limiting")
 
 
 
