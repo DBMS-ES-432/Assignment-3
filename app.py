@@ -82,9 +82,9 @@ def test_guest_fill():
         cursor = mysql.connection.cursor()
         cursor.execute('\
         INSERT INTO Complaint\
-        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption)\
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
-        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,'Guest House',b_r,'Always','Pending','NULL','NULL'))
+        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area)\
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
+        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,'Guest House',b_r,'Always','Pending','NULL','NULL','Guest House'))
         check=cursor.execute('Select * from Guest_House where Floor = %s and Room_No = %s',(floor,b_r))
         if not check:
             cursor.execute('INSERT INTO Guest_House (Floor,Room_No,Email_Id) VALUES (%s,%s,%s)',(floor,b_r,complaint_email))
@@ -113,9 +113,9 @@ def test_hostel_fill():
         cursor = mysql.connection.cursor()
         cursor.execute('\
         INSERT INTO Complaint\
-        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption)\
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
-        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,hostel,room,availability,'Pending',image,'NULL'))
+        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area)\
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
+        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,hostel,room,availability,'Pending',image,'NULL','Hostel'))
         check = cursor.execute('Select * from Hostel where Hostel_Name = %s and Room_No = %s',(hostel,room))
         if not check:
             cursor.execute('INSERT INTO Hostel (Hostel_Name,Room_No,Student_Email_ID) VALUES\
@@ -150,9 +150,9 @@ def test_housing_fill():
         cursor = mysql.connection.cursor()
         cursor.execute('\
         INSERT INTO Complaint\
-        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption)\
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
-        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,apartment,corridor,availability,'Pending',image,'NULL'))
+        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area)\
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
+        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,apartment,corridor,availability,'Pending',image,'NULL','Housing'))
         check=cursor.execute('Select * from Housing_Updated where Block_Name = %s and Apartment_No = %s',(block,apartment))
         #print(check)
         if not check:
@@ -184,9 +184,9 @@ def test_specific_fill():
         cursor = mysql.connection.cursor()
         cursor.execute('\
         INSERT INTO Complaint\
-        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption)\
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
-        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,nh,location,availability,'Pending',image,'NULL'))
+        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area)\
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
+        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,nh,location,availability,'Pending',image,'NULL','Specific'))
         mysql.connection.commit()
         cursor.close()
         return render_template("logout.html")

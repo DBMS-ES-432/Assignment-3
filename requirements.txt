@@ -8,3 +8,4 @@ requests
 uuid
 base64
 email
+flask_limiter
