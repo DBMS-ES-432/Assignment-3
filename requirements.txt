@@ -9,3 +9,4 @@ uuid
 base64
 email
 flask_limiter
+flask_talisman

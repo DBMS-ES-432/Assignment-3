@@ -12,6 +12,22 @@ from email.message import EmailMessage
 from base64 import b64encode
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from datetime import datetime
+today = datetime.today()
+months = {
+    1: 'January',
+    2: 'February',
+    3: 'March',
+    4: 'April',
+    5: 'May',
+    6: 'June',
+    7: 'July',
+    8: 'August',
+    9: 'September',
+    10: 'October',
+    11: 'November',
+    12: 'December'
+}
 #from flask_talisman import Talisman
 
 app = Flask(__name__)
@@ -82,9 +98,9 @@ def test_guest_fill():
         cursor = mysql.connection.cursor()
         cursor.execute('\
         INSERT INTO Complaint\
-        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area)\
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
-        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,'Guest House',b_r,'Always','Pending','NULL','NULL','Guest House'))
+        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area,Date,number)\
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
+        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,'Guest House',b_r,'Always','Pending','NULL','NULL','Guest House',months[today.month],number,))
         check=cursor.execute('Select * from Guest_House where Floor = %s and Room_No = %s',(floor,b_r))
         if not check:
             cursor.execute('INSERT INTO Guest_House (Floor,Room_No,Email_Id) VALUES (%s,%s,%s)',(floor,b_r,complaint_email))
@@ -110,12 +126,14 @@ def test_hostel_fill():
         image=image.read()
         image = b64encode(image).decode('utf-8')
         comp_id = uuid.uuid1()
+        if image == '':
+            image = 'NULL'
         cursor = mysql.connection.cursor()
         cursor.execute('\
         INSERT INTO Complaint\
-        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area)\
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
-        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,hostel,room,availability,'Pending',image,'NULL','Hostel'))
+        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area,Date,number)\
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
+        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,hostel,room,availability,'Pending',image,'NULL','Hostel',months[today.month],number,))
         check = cursor.execute('Select * from Hostel where Hostel_Name = %s and Room_No = %s',(hostel,room))
         if not check:
             cursor.execute('INSERT INTO Hostel (Hostel_Name,Room_No,Student_Email_ID) VALUES\
@@ -145,14 +163,16 @@ def test_housing_fill():
         image = b64encode(image).decode('utf-8')
         # with open('file.txt', 'w') as f:
         #     print(image, file=f)
+        if image == '':
+            image = 'NULL'
         comp_id = uuid.uuid1()
         #print(comp_id.hex)
         cursor = mysql.connection.cursor()
         cursor.execute('\
         INSERT INTO Complaint\
-        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area)\
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
-        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,apartment,corridor,availability,'Pending',image,'NULL','Housing'))
+        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area, Date,number)\
+        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
+        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,apartment,corridor,availability,'Pending',image,'NULL','Housing',months[today.month],number,))
         check=cursor.execute('Select * from Housing_Updated where Block_Name = %s and Apartment_No = %s',(block,apartment))
         #print(check)
         if not check:
@@ -180,13 +200,15 @@ def test_specific_fill():
         image=request.files['image']
         image=image.read()
         image = b64encode(image).decode('utf-8')
+        if image == '':
+            image = 'NULL'
         comp_id = uuid.uuid1()
         cursor = mysql.connection.cursor()
         cursor.execute('\
         INSERT INTO Complaint\
-        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area)\
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
-        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,nh,location,availability,'Pending',image,'NULL','Specific'))
+        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area,Date,number)\
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
+        (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,nh,location,availability,'Pending',image,'NULL','Specific',months[today.month],number,))
         mysql.connection.commit()
         cursor.close()
         return render_template("logout.html")
@@ -205,15 +227,16 @@ def change_status(image_id):
     cursor.execute("Select * from Complaint")
     data=cursor.fetchall()
     messages=[]
+    messages.append(cursor.fetchone())
+    cursor.execute("Select count(Complaint_Status) from Complaint")
     cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Pending'")
     messages.append(cursor.fetchone())
     cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Done'")
     messages.append(cursor.fetchone())
     cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'In Progress'")
+    
     messages.append(cursor.fetchone())
-    cursor.execute("Select count(Complaint_Status) from Complaint")
-    messages.append(cursor.fetchone())
-    #print(messages)
+    print(messages)
     return render_template('Admin_page.html',data=data,messages=messages)
     return redirect('/filter')
 
@@ -229,6 +252,7 @@ def filter():
         cursor = mysql.connection.cursor()
         messages=[]
         query = "SELECT count(Complaint_Status) FROM Complaint WHERE "
+        query1 = "SELECT * FROM Complaint WHERE "
         filters = []
         if p1:
             filters.append("Domain = '{}'".format(p1))
@@ -241,14 +265,17 @@ def filter():
             cursor.execute("Select count(Complaint_Status) from Complaint")
             messages.append(cursor.fetchone())
         if p3:
-            filters.append("Month = '{}'".format(p3))
+            filters.append("Date = '{}'".format(p3))
             cursor.execute("Select count(Complaint_Status) from Complaint")
             messages.append(cursor.fetchone())
         if filters:
             query += " AND ".join(filters)
+            query1 += " AND ".join(filters)
         for status in ['Pending','Done','In Progress']:
             cursor.execute(query + " AND Complaint_Status = '{}'".format(status))
             messages.append(cursor.fetchone())
+        cursor.execute(query1)
+        data = cursor.fetchall()
         
         
         return render_template('Admin_page.html',data=data,messages=messages)
@@ -302,13 +329,7 @@ def reset():
     cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM Complaint")
     data = cursor.fetchall()
-    data_list = []
-    for row in data:
-        row_dict = {}
-        for i, col in enumerate(cursor.description):
-            row_dict[col[0]] = row[i].decode() if isinstance(row[i], bytes) else row[i]
-        data_list.append(row_dict)
-    data_list = jsonify(data_list)
+   
     #data = list(tup)
     #print(data[0])
     messages=[]

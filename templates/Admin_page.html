@@ -110,12 +110,14 @@
         
         </form>
         <button type = "submit" class="btn" onclick="location.href='/reset'";>Reset</button>
+        <button type = "submit" class = "btn" onclick="window.print()">Print</button>
 	</div>
     
 	<!-- Complaint Table -->
 	<table id = "table">
 		<!-- <thead> -->
 			<tr>
+                <!-- <th>Date</th> -->
                 <th>Complaint ID</th>
 				<th>User ID</th>
                 <th>Subject</th>
@@ -127,12 +129,13 @@
                 <th>Availability</th>
                 <th>Complaint Status</th>
 				<th>Image</th>
+                <th>Phone Number</th>
 			</tr>
 		<!-- </thead> -->
         <!-- <tbody> -->
             {% for item in data %}
             <tr>
-
+                <!-- <td>{{item[13]}}</td> -->
                     <div class="filter">
                     <label for="comp_id"></label>
                     <form id="login" class="input-group" name="myForm" action="{{ url_for('change_status', image_id=item[0]) }}" method="Post" required>
@@ -168,7 +171,7 @@
                     <a href="{{ url_for('get_image', image_id=item[0]) }}" target="_blank">View Image</a>
                     {%endif%}
                 </td>
-                
+                <td>{{item[14]}}</td>
             </tr>
             {% endfor %}
         <!-- </thed>

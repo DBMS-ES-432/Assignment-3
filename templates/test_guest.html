@@ -43,6 +43,7 @@
             <option value="Electrical">Electrical</option>
             <option value="Air Conditioning">Air Conditioning</option>
             <option value="Water Cooler">Water Cooler</option>
+            <option value="Furniture">Furniture</option>
         </select>
       </div>
 
@@ -85,13 +86,29 @@
                     subdomainDropdown.innerHTML += '<option value="Mason work">Mason work</option>';
                     subdomainDropdown.innerHTML += '<option value="Painting work">Painting work</option>';
                     subdomainDropdown.innerHTML += '<option value="Sewage work">Sewage work</option>';
+                    subdomainDropdown.innerHTML += '<option value="Others">Others</option>';
                 } else if (domainDropdown.value === "Electrical") {
                     subdomainDropdown.innerHTML += '<option value="Internal Electrical">Internal Electrical</option>';
                     subdomainDropdown.innerHTML += '<option value="External Electrical">External Electrical</option>';
+                    subdomainDropdown.innerHTML += '<option value="Others">Others</option>';
                 } else if (domainDropdown.value === "Air Conditioning") {
                     subdomainDropdown.innerHTML += '<option value="Air Conditioning">Air Conditioning</option>';
+                    subdomainDropdown.innerHTML += '<option value="Others">Others</option>';
                 } else if (domainDropdown.value === "Water Cooler") {
                     subdomainDropdown.innerHTML += '<option value="Water Cooler">Water Cooler</option>';
+                    subdomainDropdown.innerHTML += '<option value="Others">Others</option>';
+                } else if (domainDropdown.value === "Furniture") {
+                  subdomainDropdown.innerHTML += '<option value="Chair">Chair</option>';
+                  subdomainDropdown.innerHTML += '<option value="Table">Table</option>';
+                  subdomainDropdown.innerHTML += '<option value="Cot">Cot</option>';
+                  subdomainDropdown.innerHTML += '<option value="Mattress">Mattress</option>';
+                  subdomainDropdown.innerHTML += '<option value="Door">Door</option>';
+                  
+                  subdomainDropdown.innerHTML += '<option value="Book Shelf">Book Shelf</option>';
+                  subdomainDropdown.innerHTML += '<option value="Cupboard">Cupboard</option>';
+
+                 
+                  subdomainDropdown.innerHTML += '<option value="Others">Others</option>';
                 }
             }
 
@@ -155,7 +172,37 @@
                     subdomain1Dropdown.innerHTML += '<option value="Water not cooling">Water not cooling</option>';
                     subdomain1Dropdown.innerHTML += '<option value="water cooler not working">water cooler not working</option>';
                     subdomain1Dropdown.innerHTML += '<option value="Others">Others</option>';
-                }       
+                } else if (subdomainDropdown.value === "Chair") {
+                  subdomain1Dropdown.innerHTML += '<option value="Damage">Damage</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Missing">Missing</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Others">Others</option>';
+                }else if (subdomainDropdown.value === "Cot") {
+                  subdomain1Dropdown.innerHTML += '<option value="Damage">Damage</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Missing">Missing</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Others">Others</option>';
+                }else if (subdomainDropdown.value === "Table") {
+                  subdomain1Dropdown.innerHTML += '<option value="Damage">Damage</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Missing">Missing</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Others">Others</option>';
+                }else if (subdomainDropdown.value === "Cupboard") {
+                  subdomain1Dropdown.innerHTML += '<option value="Damage">Damage</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Missing">Missing</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Others">Others</option>';
+                }else if (subdomainDropdown.value === "Book Shelf") {
+                  subdomain1Dropdown.innerHTML += '<option value="Damage">Damage</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Missing">Missing</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Others">Others</option>';
+                }else if (subdomainDropdown.value === "Mattress") {
+                  subdomain1Dropdown.innerHTML += '<option value="Damage">Damage</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Missing">Missing</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Others">Others</option>';
+                }else if (subdomainDropdown.value === "Door") {
+                  subdomain1Dropdown.innerHTML += '<option value="Damage">Damage</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Missing">Missing</option>';
+                  subdomain1Dropdown.innerHTML += '<option value="Others">Others</option>';
+                }else{
+                  subdomain1Dropdown.innerHTML += '<option value="Others">Others</option>';
+                }   
             }
 
             function clearSubdomain1() {
