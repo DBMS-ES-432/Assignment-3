@@ -3,6 +3,7 @@
 <head>
 	<title>Dashboard</title>
 	<link rel="stylesheet" href="../static/styleadminpage.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -57,13 +58,13 @@
     <!--STATS-->
     <div class="stats">
         {% if messages %}  
-        <span id="totalComplaints">Total Complaints: {{messages[3][0]}}</span>
+        <span id="totalComplaints">Total Complaints: {{messages[0][0]}}</span>
         <span> | </span>
-        <span id="completed">Completed: {{messages[1][0]}}</span>
+        <span id="completed">Completed: {{messages[2][0]}}</span>
         <span> | </span>
-        <span id="In Progress">In Progress: {{messages[2][0]}}</span>
+        <span id="In Progress">In Progress: {{messages[3][0]}}</span>
         <span> | </span>
-        <span id="Pending">Pending: {{messages[0][0]}}</span>
+        <span id="Pending">Pending: {{messages[1][0]}}</span>
         {% endif %}
       </div>
 
@@ -71,7 +72,7 @@
 	<div class="filter">
 		<label for="domain">Domain:</label>
         <form id="login" class="input-group" name="myForm" action="/filter" method="Post" required>
-            <select id="domain1" name="filter" onchange="this.form.submit()">
+        <select name="domain">
             <option value="" >Select Domain</option>
             <option value="All" >All</option>
 			<option value="Civil">Civil</option>
@@ -79,12 +80,41 @@
 			<option value="Air-Conditioning">Air-Conditioning</option>
             <option value="Water Cooler">Water Cooling</option>
 		</select>
+
+        <select name = "Area">
+            <option value="" >Select Area</option>
+            <option value="All" >All</option>
+            <option value="Hostel">Hostel</option>
+            <option value="Housing">Housing</option>
+            <option value="Guest House">Guest House</option>
+            <option value="Specific Location">Specific Location</option>
+        </select>
+
+        <select name = "Month">
+            <option value="" >Select Month</option>
+            <option value="All" >All</option>
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <option value="May">May</option>
+            <option value="June">June</option>
+            <option value="July">July</option>
+            <option value="August">August</option>
+            <option value="September">September</option>
+            <option value="October">October</option>
+            <option value="November">November</option>
+            <option value="December">December</option>
+        </select>
+        <button type="submit" class="btn" ;>Search</button>
+        
         </form>
+        <button type = "submit" class="btn" onclick="location.href='/reset'";>Reset</button>
 	</div>
     
 	<!-- Complaint Table -->
-	<table>
-		<thead>
+	<table id = "table">
+		<!-- <thead> -->
 			<tr>
                 <th>Complaint ID</th>
 				<th>User ID</th>
@@ -98,8 +128,8 @@
                 <th>Complaint Status</th>
 				<th>Image</th>
 			</tr>
-		
-        <tbody>
+		<!-- </thead> -->
+        <!-- <tbody> -->
             {% for item in data %}
             <tr>
 
@@ -141,6 +171,22 @@
                 
             </tr>
             {% endfor %}
-        </thed>
-        </tbody>
+        <!-- </thed>
+        </tbody> -->
+    </table>
+    <!-- <script>
+        $(".filter select").on('change', function() {
+      var filters = $.map($(".filter select").toArray(), function(e) {
+        return $(e).val();
+      }).join(".");
+      $("table").find("tr").hide();
+      $("table").find("tr." + filters).show();
+    });
+    // Reset
+    $('button').on('click', function(){
+            $(".filter select").val( $("option:first").val() );
+            $("table").find("tr").show();
+    });
+    </script> -->
     
+</body>

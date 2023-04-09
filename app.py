@@ -12,13 +12,13 @@ from email.message import EmailMessage
 from base64 import b64encode
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+#from flask_talisman import Talisman
 
 app = Flask(__name__)
-
+#Talisman(app)
 limiter = Limiter(get_remote_address, app=app, default_limits=["200 per day", "50 per hour"])
 
 db=yaml.safe_load(open('db.yaml'))
-
 
 app.secret_key = 'your secret key'
 
@@ -223,70 +223,35 @@ def change_status(image_id):
 @login_required
 def filter():
     if request.method == 'POST':
-        filter = request.form['filter']
+        p1 = request.form['domain']
+        p2 = request.form['Area']
+        p3 = request.form['Month']
         cursor = mysql.connection.cursor()
-        #print(filter)
         messages=[]
-        if filter == 'Civil':
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Civil' and Complaint_Status = 'Pending'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Civil' and Complaint_Status = 'Done'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Civil' and Complaint_Status = 'In Progress'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Civil'")
-            messages.append(cursor.fetchone())
-            cursor.execute('Select * from Complaint where Domain = %s',(filter,))
+        query = "SELECT count(Complaint_Status) FROM Complaint WHERE "
+        filters = []
+        if p1:
+            filters.append("Domain = '{}'".format(p1))
+            cursor.execute('Select * from Complaint where Domain = %s',(p1,))
             data = cursor.fetchall()
-            return render_template('Admin_page.html',data=data,messages=messages)
-        elif filter == 'Electrical':
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Electrical' and Complaint_Status = 'Pending'")
+            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = %s",(p1,))
             messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Electrical' and Complaint_Status = 'Done'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Electrical' and Complaint_Status = 'In Progress'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Electrical'")
-            messages.append(cursor.fetchone())
-            cursor.execute('Select * from Complaint where Domain = %s',(filter,))
-            data = cursor.fetchall()
-            return render_template('Admin_page.html',data=data,messages=messages)
-        elif filter == 'Air-Conditioning':
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Air-Conditioning' and Complaint_Status = 'Pending'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Air-Conditioning' and Complaint_Status = 'Done'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Air-Conditioning' and Complaint_Status = 'In Progress'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Air-Conditioning'")
-            messages.append(cursor.fetchone())
-            cursor.execute('Select * from Complaint where Domain = %s',(filter,))
-            data = cursor.fetchall()
-            return render_template('Admin_page.html',data=data,messages=messages)
-        elif filter == 'Water Cooler':
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Water Cooler' and Complaint_Status = 'Pending'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Water Cooler' and Complaint_Status = 'Done'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Water Cooler' and Complaint_Status = 'In Progress'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Domain = 'Water Cooler'")
-            messages.append(cursor.fetchone())
-            cursor.execute('Select * from Complaint where Domain = %s',(filter,))
-            data = cursor.fetchall()
-            return render_template('Admin_page.html',data=data,messages=messages)
-        elif filter == 'All':
-            cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Pending'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Done'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'In Progress'")
-            messages.append(cursor.fetchone())
+        if p2:
+            filters.append("Area = '{}'".format(p2))
             cursor.execute("Select count(Complaint_Status) from Complaint")
             messages.append(cursor.fetchone())
-            cursor.execute("SELECT * FROM Complaint")
-            data = cursor.fetchall()
-            return render_template('Admin_page.html',messages=messages,data=data)
+        if p3:
+            filters.append("Month = '{}'".format(p3))
+            cursor.execute("Select count(Complaint_Status) from Complaint")
+            messages.append(cursor.fetchone())
+        if filters:
+            query += " AND ".join(filters)
+        for status in ['Pending','Done','In Progress']:
+            cursor.execute(query + " AND Complaint_Status = '{}'".format(status))
+            messages.append(cursor.fetchone())
+        
+        
+        return render_template('Admin_page.html',data=data,messages=messages)
 @app.route('/', methods =['GET', 'POST'])
 @limiter.limit("5 per minute")
 def login():
@@ -330,6 +295,35 @@ def admin_page():
     return render_template('Admin_page.html')
 
 
+@app.route('/reset',methods=['GET','POST'])
+@login_required
+@admin_required
+def reset():
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT * FROM Complaint")
+    data = cursor.fetchall()
+    data_list = []
+    for row in data:
+        row_dict = {}
+        for i, col in enumerate(cursor.description):
+            row_dict[col[0]] = row[i].decode() if isinstance(row[i], bytes) else row[i]
+        data_list.append(row_dict)
+    data_list = jsonify(data_list)
+    #data = list(tup)
+    #print(data[0])
+    messages=[]
+    cursor.execute("Select count(Complaint_Status) from Complaint")
+    messages.append(cursor.fetchone())
+    cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Pending'")
+    messages.append(cursor.fetchone())
+    cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Done'")
+    messages.append(cursor.fetchone())
+    cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'In Progress'")
+    messages.append(cursor.fetchone())
+    
+    #print(messages)
+    return render_template('Admin_page.html',data=data,messages=messages), 200
+
 @app.route('/admin', methods = ['GET', 'POST'])
 @limiter.limit("5 per minute")
 def admin():
@@ -339,22 +333,8 @@ def admin():
         #print(username,password)
         if username.lower() == 'admin' and password == 'asdf':
             session['user'] = 'admin'
-            cursor = mysql.connection.cursor()
-            cursor.execute("SELECT * FROM Complaint")
-            data = cursor.fetchall()
-            #data = list(tup)
-            #print(data[0])
-            messages=[]
-            cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Pending'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'Done'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint where Complaint_Status = 'In Progress'")
-            messages.append(cursor.fetchone())
-            cursor.execute("Select count(Complaint_Status) from Complaint")
-            messages.append(cursor.fetchone())
-            #print(messages)
-            return render_template('Admin_page.html',data=data,messages=messages), 200
+            return redirect('/reset')
+
     return render_template('admin_login.html'), 400
 
 
