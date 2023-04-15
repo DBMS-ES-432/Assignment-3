@@ -4,7 +4,7 @@
   
   <title>Login And Registration Form</title>
   <link rel="stylesheet" href="../static/style3.css">
-  
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
   <div class="hero">
@@ -14,6 +14,7 @@
     <div id="btn"></div>
   </div>
   <form id="login" class="input-group" name="myForm" action="/register" method="Post" required>
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
     <select  name="User_Type" id="User_Type"  required>
       <option>Select User Type</option>
       <option value="Employee">Employee</option>

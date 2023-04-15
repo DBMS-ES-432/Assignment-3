@@ -5,12 +5,14 @@
     -<title> Guest House Form </title>-
     <link rel="stylesheet" href="../static/test.css">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="csrf-token" content="{{ csrf_token() }}">
    </head>
 <body class="b4">
   <div class="container">
     <div class="title">Guest House</div>
     <div class="content">
       <form action="/test_guest_fill" method="POST" requied enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
         <div class="user-details">
           <div class="input-box">
             <span class="details">Username</span>
@@ -213,6 +215,7 @@
             }
         </script>
         <div class="button">
+          <input type="hidden" name="csrf_token" value="{{csrf_token()}}"> 
           <input type="submit" value="Submit" >
         </div>
 

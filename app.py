@@ -13,8 +13,9 @@ from base64 import b64encode
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from datetime import datetime
-from flask_wtf.csrf import CSRFProtect, CSRFError
-csrf = CSRFProtect()
+from flask_wtf.csrf import CSRFProtect
+
+csrf  = CSRFProtect()
 
 
 
@@ -33,10 +34,22 @@ months = {
     11: 'November',
     12: 'December'
 }
-from flask_talisman import Talisman
 
 app = Flask(__name__)
-Talisman(app)
+csp = {
+    'default-src': '\'self\'','img-src': '*',
+    'script-src': [
+        '\'self\'',
+        '\'unsafe-inline\'',  # Allow inline script execution
+   'https://cdn.jsdelivr.net/npm/sweetalert2@11'],
+    'style-src': [
+        '\'self\'',
+        '\'unsafe-inline\'',  # Allow inline style execution
+    ],
+}
+from flask_talisman import Talisman
+Talisman(app, content_security_policy=csp)
+csrf.init_app(app)
 limiter = Limiter(get_remote_address, app=app, default_limits=["200 per day", "50 per hour"])
 
 db=yaml.safe_load(open('db.yaml'))
@@ -49,7 +62,7 @@ app.config['MYSQL_PASSWORD'] = db['mysql_password']
 app.config['MYSQL_DB'] = db['mysql_db']
 app.config['MESSAGE_FLASHING_OPTIONS'] = {'duration': 5}
 
-csrf.init_app(app)
+
 
 name = ''
 email_id = ''
@@ -103,10 +116,12 @@ def test_guest_fill():
         floor = request.form['floor']
         comp_id = uuid.uuid1()
         cursor = mysql.connection.cursor()
+        time = today.date()
+
         cursor.execute('\
         INSERT INTO Complaint\
-        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area,Date,number)\
-        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
+        (Comp_Id,User_ID,Subject,Domain,Sub_Domain1,Sub_Domain2,Location,Specific_Location,Availability,Complaint_Status,Image,Caption,Area,Date,number,time)\
+        VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)', \
         (str(comp_id.hex),complaint_email,subject,domain,subdomain,subdomain1,'Guest House',b_r,'Always','Pending','NULL','NULL','Guest House',months[today.month],number,))
         check=cursor.execute('Select * from Guest_House where Floor = %s and Room_No = %s',(floor,b_r))
         if not check:
@@ -256,6 +271,8 @@ def filter():
         p1 = request.form['domain']
         p2 = request.form['Area']
         p3 = request.form['Month']
+        p4 = request.form['from']
+        p5 = request.form['to']
         cursor = mysql.connection.cursor()
         messages=[]
         query = "SELECT count(Complaint_Status) FROM Complaint WHERE "
@@ -275,16 +292,29 @@ def filter():
             filters.append("Date = '{}'".format(p3))
             cursor.execute("Select count(Complaint_Status) from Complaint")
             messages.append(cursor.fetchone())
+        if p4:
+            filters.append("time >= '{}'".format(p4))
+            cursor.execute("Select count(Complaint_Status) from Complaint")
+            messages.append(cursor.fetchone())
+        if p5:
+            filters.append("time <= '{}'".format(p5))
+            cursor.execute("Select count(Complaint_Status) from Complaint")
+            messages.append(cursor.fetchone())
         if filters:
             query += " AND ".join(filters)
             query1 += " AND ".join(filters)
-        for status in ['Pending','Done','In Progress']:
+
+        for status in ['Pending','Done','In Progress','Unable to process']:
             cursor.execute(query + " AND Complaint_Status = '{}'".format(status))
             messages.append(cursor.fetchone())
-        cursor.execute(query1)
-        data = cursor.fetchall()
+
+        try:
+            cursor.execute(query1)
+            data = cursor.fetchall()
+        except:
+            data = []
         
-        
+        print(messages)
         return render_template('Admin_page.html',data=data,messages=messages)
 @app.route('/', methods =['GET', 'POST'])
 @limiter.limit("5 per minute")

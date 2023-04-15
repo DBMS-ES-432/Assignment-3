@@ -3,59 +3,24 @@
 <head>
 	<title>Dashboard</title>
 	<link rel="stylesheet" href="../static/styleadminpage.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        @media print {
+			@page {
+				size: landscape;
+				margin: 0;
+			}
+		}
+    </style>
 </head>
 
 <body>
-    <!-- <script>
-        function disp()
-        {
-            var x=document.getElementById("domain1").value;
-            if(x=="Civil")
-            document.getElementById("c3").innerHTML="Civil";
-            else if(x=="Electrical")document.getElementById("c3").innerHTML="Electrical";
-            else if(x=="Water Cooling")document.getElementById("c3").innerHTML="Water Cooling";
-            else if(x=="Air Conditioning")document.getElementById("c3").innerHTML="Air Conditioning";
-            else document.getElementById("c3").innerHTML="ALL";
-           
-        }
-            
-    </script> -->
-    <!-- {% with messages = get_flashed_messages() %}  
-         {% if messages %}  
-               {% for message in messages %}  
-                    <p>{{ message }}</p>  
-               {% endfor %}  
-         {% endif %}  
-      {% endwith %}   -->
-
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
 
 	<div class="body" action="/logout"> 
     <!-- Heading -->
 	<h1>Maintainence Portal Dashboard</h1>
-    <button class="Logout" type="submit" onclick="location.href='/logout'";>Log Out</button>
-	<!-- Menubar -->
-    <!-- <div class="filter">
-    <form id="login" class="input-group" name="myForm" action="/filter2" method="Post" required>
-        
-        <ul>
-           
-            <li><a href="/housing_table">Housing</a></li>
-            <li><a href="#">Hostel</a></li>
-            <li><a href="#">Guest House</a></li>
-            <li><a href="#">Specific Location</a></li>
-            <option value="" >Select Location</option>
-            <option value="All" >All</option>
-			<option value="Hostel">Hostel</option>
-			<option value="Housing">Housing</option>
-			<option value="Guest House">Guest House</option>
-            <option value="Specific Location">Specific Location</option>
-
-        </ul>
-        </select>
-    </form>
-    </div> -->
-    <!--STATS-->
+    <button class="Logout" type="submit" onclick="location.href='/logout';">Log Out</button>
+	
     <div class="stats">
         {% if messages %}  
         <span id="totalComplaints">Total Complaints: {{messages[0][0]}}</span>
@@ -72,7 +37,8 @@
 	<div class="filter">
 		<label for="domain">Domain:</label>
         <form id="login" class="input-group" name="myForm" action="/filter" method="Post" required>
-        <select name="domain">
+            <input type="hidden" name="csrf_token" value="{{csrf_token()}}"> 
+            <select name="domain">
             <option value="" >Select Domain</option>
             <option value="All" >All</option>
 			<option value="Civil">Civil</option>
@@ -106,20 +72,24 @@
             <option value="November">November</option>
             <option value="December">December</option>
         </select>
+        <input type="date" id="myDate" name="from">
+        <input type="date" id="myDate" name="to">
         <button type="submit" class="btn" ;>Search</button>
         
         </form>
+
         <button type = "submit" class="btn" onclick="location.href='/reset'";>Reset</button>
         <button type = "submit" class = "btn" onclick="window.print()">Print</button>
 	</div>
     
-	<!-- Complaint Table -->
 	<table id = "table">
-		<!-- <thead> -->
+		<thead>
 			<tr>
                 <!-- <th>Date</th> -->
-                <th>Complaint ID</th>
+                <!-- <th>Complaint ID</th> -->
+                <th>Date</th>
 				<th>User ID</th>
+                <th>Phone Number</th>
                 <th>Subject</th>
 				<th>Domain</th>
 				<th>Sub-Domain 1</th>
@@ -128,22 +98,24 @@
                 <th>Specific Location</th>
                 <th>Availability</th>
                 <th>Complaint Status</th>
+                <th>Remarks</th>
 				<th>Image</th>
-                <th>Phone Number</th>
+
 			</tr>
-		<!-- </thead> -->
-        <!-- <tbody> -->
+		</thead> 
+        <tbody>
             {% for item in data %}
             <tr>
                 <!-- <td>{{item[13]}}</td> -->
-                    <div class="filter">
+                
                     <label for="comp_id"></label>
                     <form id="login" class="input-group" name="myForm" action="{{ url_for('change_status', image_id=item[0]) }}" method="Post" required>
                         
-                    <td>{{item[0]}}</td>
-                    </div>
+                <!-- <td>{{item[0]}}</td> -->
 
+                <td>{{item[15]}}</td>      
                 <td>{{item[1]}}</td>
+                <td>{{item[14]}}</td>
                 <td>{{item[2]}}</td>
                 <td>{{item[3]}}</td>
                 <td>{{item[4]}}</td>
@@ -152,18 +124,22 @@
                 <td>{{item[7]}}</td>
                 <td>{{item[8]}}</td>
                 <td>
-                    <div class="filter">
+                    <div class="filter" >
                     <label for="domain">{{item[9]}}</label>
+                    <input type="hidden" name="csrf_token" value="{{csrf_token()}}"> 
                         <select id="domain1" name="filter2" onchange="this.form.submit()">
                         <option value="">Select Status</option>
                         <option value="In Progress">In Progress</option>
                         <option value="Done">Done</option>
                         <option value="Pending">Pending</option>
+                        <option value="Unable to process">Unable to process</option>
+                    </td>
+                    <td><input type="text" name = "remarks" placeholder="Remarks"></td>
+                    <td>
                     </select>
                     </form>
                     </div>
-                </td>
-                <td>
+                
                     <!-- {{item[10]}} -->
                     {% if "NULL" in item[10]|string %}
                     <p>NULL</p>
@@ -171,11 +147,11 @@
                     <a href="{{ url_for('get_image', image_id=item[0]) }}" target="_blank">View Image</a>
                     {%endif%}
                 </td>
-                <td>{{item[14]}}</td>
+                
             </tr>
             {% endfor %}
-        <!-- </thed>
-        </tbody> -->
+        </thed>
+        </tbody>
     </table>
     <!-- <script>
         $(".filter select").on('change', function() {

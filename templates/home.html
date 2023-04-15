@@ -3,10 +3,11 @@
   <head>
     <title>Home Page</title>
     <link rel="stylesheet" href="../static/home.css">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
   </head>
   <body>
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
     <div class="body"> 
-      <input type = "hidden" name = "csrf_token" value = "{{ csrf_token() }}">
         <img src="static/iitgn.png" alt="Image 1" class="image1">
         <h4 id="log">
           {% if login %}

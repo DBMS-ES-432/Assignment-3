@@ -4,6 +4,7 @@
   <meta http-equiv="X-Frame-Options" content="DENY">
   <title>Login And Registration Form</title>
   <link rel="stylesheet" href="../static/style3.css">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   
 </head>
 <body>
@@ -14,6 +15,7 @@
     <div id="btn"></div>
   </div>
   <form id="login" class="input-group" name="myForm" action="" method="Post" required>
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}"> 
     {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class=flashes>
