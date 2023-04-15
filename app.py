@@ -13,6 +13,11 @@ from base64 import b64encode
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from datetime import datetime
+from flask_wtf.csrf import CSRFProtect, CSRFError
+csrf = CSRFProtect()
+
+
+
 today = datetime.today()
 months = {
     1: 'January',
@@ -28,10 +33,10 @@ months = {
     11: 'November',
     12: 'December'
 }
-#from flask_talisman import Talisman
+from flask_talisman import Talisman
 
 app = Flask(__name__)
-#Talisman(app)
+Talisman(app)
 limiter = Limiter(get_remote_address, app=app, default_limits=["200 per day", "50 per hour"])
 
 db=yaml.safe_load(open('db.yaml'))
@@ -43,6 +48,8 @@ app.config['MYSQL_USER'] = db['mysql_user']
 app.config['MYSQL_PASSWORD'] = db['mysql_password']
 app.config['MYSQL_DB'] = db['mysql_db']
 app.config['MESSAGE_FLASHING_OPTIONS'] = {'duration': 5}
+
+csrf.init_app(app)
 
 name = ''
 email_id = ''
